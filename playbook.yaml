@@ -1,0 +1,39 @@
+---
+- name: Build total health modification
+  hosts: all
+  vars:
+   build_id: "{{ ansible_date_time.iso8601_micro | to_uuid }}"
+   title: "team_hp"
+   game_version: 0.7.2.2
+   version: 1.0
+   region: "{{ lookup('env','REGION') }}"
+   timestamp: "{{lookup('pipe','date +%Y%m%d%H%M%S')}}"
+  roles:
+    - role: prepare
+    - role: install_dependencies
+      dependency_list:
+        - { git_repo: 'https://github.com/Monstrofil/game_client_files.git', destination: '@game-files' }
+    - role: copy_required_files
+      files:
+        - { src: '@game-files/gui/battle_elements.xml',
+            destination: 'gui/' }
+    - role: as3_compile
+      source_path: src
+      target_file: src/com/monstrofil/TotalHealthMovie.as
+      library_path: lib/wows_library.swc
+      output_file: gui/flash/header_health.swf
+    - role: register_swf_in_battle_elements
+      elements:
+        - { name: "allyTeamHealthView",  class: "AllyTeamHealthView",  url: "header_health.swf"}
+        - { name: "enemyTeamHealthView", class: "EnemyTeamHealthView", url: "header_health.swf"}
+        - { name: "teamFrags",           class: "TeamFragsLabelView",  url: "header_health.swf"}
+      remove_elements:
+        - { name: "unboundShipsList"}
+      controllers:
+        - { class: "lesta.dialogs.battle_window_controllers.UnboundElementController", clips: "unboundShipsList"}
+      remove_controllers:
+        - { class: "com.monstrofil.controllers.TeamHealthController",  clips: "allyTeamHealthView,enemyTeamHealthView,teamFrags"}
+    - role: create_package
+    - role: cleanup
+
+

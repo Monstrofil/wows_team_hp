@@ -1,0 +1,3 @@
+[submodule "submodules/ansible_tools"]
+	path = submodules/ansible_tools
+	url = https://github.com/Monstrofil/mods_build_tool_ansible
