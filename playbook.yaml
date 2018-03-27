@@ -29,9 +29,9 @@
         - { name: "teamFrags",           class: "TeamFragsLabelView",  url: "header_health.swf"}
       remove_elements:
         - { name: "unboundShipsList"}
-      controllers:
-        - { class: "lesta.dialogs.battle_window_controllers.UnboundElementController", clips: "unboundShipsList"}
       remove_controllers:
+        - { class: "lesta.dialogs.battle_window_controllers.UnboundElementController", clips: "unboundShipsList"}
+      controllers:
         - { class: "com.monstrofil.controllers.TeamHealthController",  clips: "allyTeamHealthView,enemyTeamHealthView,teamFrags"}
     - role: create_package
     - role: cleanup
