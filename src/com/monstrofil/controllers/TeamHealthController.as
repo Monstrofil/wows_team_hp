@@ -73,10 +73,15 @@ package com.monstrofil.controllers
 			trace("========================================");
 			var teamHealth: Number = 0;
 			var teamMaxHealth: Number = 0;
+			var teamDeadPlayers: Number = 0;
 			array.forEach(function(entity: Entity):void {
 				var healthComponent: Health = entity.getComponent(ComponentClass.health) as Health;
 				var visibilityComponent: Visibility = entity.getComponent(ComponentClass.visibility) as Visibility;
 				var avatarComponent: Avatar = entity.getComponent(ComponentClass.avatar) as Avatar;
+				
+				if (!healthComponent.isAlive){
+					teamDeadPlayers += 1;
+				}
 							
 				// we have problems with non-visible players
 				if (!visibilityComponent.visible) {
@@ -107,7 +112,7 @@ package com.monstrofil.controllers
 			trace(teamHealth, teamMaxHealth);
 			trace("========================================");
 			
-			return {health: teamHealth, maxHealth: teamMaxHealth};
+			return {health: teamHealth, maxHealth: teamMaxHealth, teamFrags: teamDeadPlayers};
 		}
 		
 		public function onTick(e:TimerEvent):void {
@@ -123,7 +128,7 @@ package com.monstrofil.controllers
 			this.enemyTeamHealthView.maxHealth = enemyTeam.maxHealth;
 			this.enemyTeamHealthView.health = enemyTeam.health;
 			
-			this.teamFrags.setTeamFrags(GameInfoHolder.instance.gameInfo.alliedFrags, GameInfoHolder.instance.gameInfo.enemyFrags);
+			this.teamFrags.setTeamFrags(enemyTeam.teamFrags, allyTeam.teamFrags);
 		}
 		
 	}
