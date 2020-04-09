@@ -4,8 +4,7 @@ bin-release/
 [Oo]bj/
 [Bb]in/
 .idea
-tmp/
-*
+tmp/*
 dependencies/*
 *.retry
 
