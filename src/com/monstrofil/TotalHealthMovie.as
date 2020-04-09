@@ -18,7 +18,12 @@ package com.monstrofil
 	 */
 	public class TotalHealthMovie extends MovieClip 
 	{	
-		public var listInclude = [AllyTeamHealthView, EnemyTeamHealthView, TeamHealthController, TeamFragsLabelView];
+		public var listInclude = [
+			AllyTeamHealthView, 
+			EnemyTeamHealthView, 
+			TeamHealthController, 
+			TeamFragsLabelView
+		];
 		public function TotalHealthMovie() 
 		{
 			super();

@@ -39,7 +39,6 @@ package com.monstrofil.controllers
 		public var enemyTeamHealthView: TeamHealthView;
 		public var teamFrags: TeamFragsView;
 		
-		public var stageComponent: lesta.components.Stage;
 		
 		public function TeamHealthController() 
 		{

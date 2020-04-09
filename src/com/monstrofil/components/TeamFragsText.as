@@ -12,18 +12,18 @@ package com.monstrofil.components
 	public class TeamFragsText extends TextField 
 	{
 		private var defaultShadow: DropShadowFilter = new DropShadowFilter(0, 45, 0x000000);
-		private var myTextFormat: TextFormat = new TextFormat();
+		private var teamFragsTextFormat: TextFormat = new TextFormat();
 		
 		public function TeamFragsText(align: String) 
 		{
 			super();
 			
-			this.myTextFormat.font = "WarHeliosCondCBold";
-			this.myTextFormat.size = 20;
-			this.myTextFormat.color = 0xFFFFFF;
-			this.myTextFormat.align = align;
-			this.defaultTextFormat = this.myTextFormat;
-			this.setTextFormat(this.myTextFormat);
+			this.teamFragsTextFormat.font = "$ZurichCondensedBold";
+			this.teamFragsTextFormat.size = 20;
+			this.teamFragsTextFormat.color = 0xFFFFFF;
+			this.teamFragsTextFormat.align = align;
+			this.defaultTextFormat = this.teamFragsTextFormat;
+			this.setTextFormat(this.teamFragsTextFormat);
 			
 			this.filters = [this.defaultShadow]; 
 		}
