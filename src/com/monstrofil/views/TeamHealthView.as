@@ -29,7 +29,12 @@ package com.monstrofil.views
 		public function set health(value: Number): void {
 			this.healthBar.health = value;
 			
-			this.healthText.text = Math.ceil(value / 1000).toString() + 'K';
+			if (isNaN(value)) {
+				this.healthText.text = '---';
+			}
+			else {
+				this.healthText.text = Math.ceil(value / 1000).toString() + 'K';
+			}
 
 			this.updateLayout();
 		}

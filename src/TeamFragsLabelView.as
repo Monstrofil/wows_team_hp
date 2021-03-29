@@ -1,5 +1,8 @@
 package 
 {
+	CONFIG::debug {
+		import com.junkbyte.console.Cc;
+	}
 	import com.monstrofil.views.TeamFragsView;
 	
 	/**
@@ -12,7 +15,9 @@ package
 		public function TeamFragsLabelView() 
 		{
 			super();
-			
+			CONFIG::debug {
+				Cc.startOnStage(this);
+			}
 		}
 		
 	}

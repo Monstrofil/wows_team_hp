@@ -1,5 +1,8 @@
 package com.monstrofil.controllers 
 {
+	CONFIG::debug {
+		import com.junkbyte.console.Cc;
+	}
 	import com.monstrofil.views.TeamFragsView;
 	import com.monstrofil.views.TeamHealthView;
 	import flash.display.DisplayObject;
@@ -17,6 +20,7 @@ package com.monstrofil.controllers
 	import lesta.constants.ComponentClass;
 	import lesta.datahub.Entity;
 	import lesta.dialogs.battle_window_new.HudElementController;
+	import lesta.managers.InputMapping;
 	import lesta.structs.Player;
 	import lesta.structs.ShipInfo;
 	import lesta.unbound.core.UbCentral;
@@ -69,14 +73,19 @@ package com.monstrofil.controllers
 		}
 		
 		private function getTeamInfo(array: Array): Object {
-			trace("========================================");
+			CONFIG::debug {
+				Cc.log("========================================");
+			}
 			var teamHealth: Number = 0;
 			var teamMaxHealth: Number = 0;
 			var teamDeadPlayers: Number = 0;
+			//Cc.log(teamHealth, teamMaxHealth);
 			array.forEach(function(entity: Entity):void {
 				var healthComponent: Health = entity.getComponent(ComponentClass.health) as Health;
 				var visibilityComponent: Visibility = entity.getComponent(ComponentClass.visibility) as Visibility;
 				var avatarComponent: Avatar = entity.getComponent(ComponentClass.avatar) as Avatar;
+				
+				//Cc.log(healthComponent, visibilityComponent, avatarComponent);
 				
 				if (!healthComponent.isAlive){
 					teamDeadPlayers += 1;
@@ -87,6 +96,9 @@ package com.monstrofil.controllers
 					// non-itilialized player
 					if (healthComponent.max == 0) {
 						var shipComponent: Ship = avatarComponent.ship.ref.ship;
+						CONFIG::debug {
+							Cc.log("shipComponent", healthComponent.value, healthComponent.max, shipComponent.params.health);
+						}
 						teamMaxHealth += shipComponent.params.health;
 						// let's think that ship is full
 						if (healthComponent.isAlive){
@@ -108,17 +120,20 @@ package com.monstrofil.controllers
 					teamMaxHealth += healthComponent.max;
 				}
 			});
-			trace(teamHealth, teamMaxHealth);
-			trace("========================================");
+			CONFIG::debug {
+				Cc.log(teamHealth, teamMaxHealth);
+				Cc.log("========================================");
+			}
 			
 			return {health: teamHealth, maxHealth: teamMaxHealth, teamFrags: teamDeadPlayers};
 		}
 		
 		public function onTick(e:TimerEvent):void {
-			var teams:Collection = dataHub.getCollection(ComponentClass.avatar).child("team");
-			var allyList:Collection = teams.child(PlayerRelation.STRINGS[PlayerRelation.FRIEND]).child("sortedAlive");
-			var enemyList:Collection = teams.child(PlayerRelation.STRINGS[PlayerRelation.ENEMY]).child("sortedAlive");
-			
+			InputMapping.dispatchActionEvent('createParamsForAllShipsInBattle', {});
+			var teams:Collection = dataHub.getCollection(ComponentClass.avatar);
+			var allyList:Collection = teams.getChildByPath("team.ally.sortedAlive");
+			var enemyList:Collection = teams.getChildByPath("team.enemy.sortedAlive");
+				
 			var allyTeam: Object = this.getTeamInfo(allyList.items);
 			this.allyTeamHealthView.maxHealth = allyTeam.maxHealth;
 			this.allyTeamHealthView.health = allyTeam.health;
