@@ -54,6 +54,8 @@ package com.monstrofil.controllers
 		{	
 			this.updateTimer.start();
 			
+			InputMapping.dispatchActionEvent('createParamsForAllShipsInBattle', {});
+			
 			this.stageComponent = dataHub.getSingleComponent(ComponentClass.stage) as lesta.components.Stage;
 			this.onUpdateStageSize(this.stageComponent);
 			this.stageComponent.evStageSizeChanged.addCallback(this.updateStageSize);
@@ -129,7 +131,6 @@ package com.monstrofil.controllers
 		}
 		
 		public function onTick(e:TimerEvent):void {
-			InputMapping.dispatchActionEvent('createParamsForAllShipsInBattle', {});
 			var teams:Collection = dataHub.getCollection(ComponentClass.avatar);
 			var allyList:Collection = teams.getChildByPath("team.ally.sortedAlive");
 			var enemyList:Collection = teams.getChildByPath("team.enemy.sortedAlive");
