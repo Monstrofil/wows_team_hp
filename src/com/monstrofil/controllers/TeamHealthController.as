@@ -43,6 +43,8 @@ package com.monstrofil.controllers
 		public var enemyTeamHealthView: TeamHealthView;
 		public var teamFrags: TeamFragsView;
 		
+		protected var stageObjectComponent:lesta.components.Stage;
+		
 		
 		public function TeamHealthController() 
 		{
@@ -56,11 +58,14 @@ package com.monstrofil.controllers
 			
 			InputMapping.dispatchActionEvent('createParamsForAllShipsInBattle', {});
 			
-			this.stageComponent = dataHub.getSingleComponent(ComponentClass.stage) as lesta.components.Stage;
-			this.onUpdateStageSize(this.stageComponent);
-			this.stageComponent.evStageSizeChanged.addCallback(this.updateStageSize);
+			this.stageObjectComponent = dataHub.getSingleComponent(ComponentClass.stage) as lesta.components.Stage;
+			this.onUpdateStageSize(this.stageObjectComponent);
+			this.stageObjectComponent.evStageSizeChanged.addCallback(this.updateStageSize);
 			
 			super.init();
+			CONFIG::debug {
+				Cc.log('init success');
+			}
 		}
 		
 		public function onUpdateStageSize (stage: lesta.components.Stage) : void {
@@ -70,8 +75,12 @@ package com.monstrofil.controllers
 		
 		override protected function fini(): void {
 			this.updateTimer.stop();
-			this.stageComponent.evStageSizeChanged.removeCallback(this.onUpdateStageSize);
+			this.stageObjectComponent.evStageSizeChanged.removeCallback(this.onUpdateStageSize);
+			this.stageObjectComponent = null;
 			super.fini();
+			CONFIG::debug {
+				Cc.log('fini success');
+			}
 		}
 		
 		private function getTeamInfo(array: Array): Object {
